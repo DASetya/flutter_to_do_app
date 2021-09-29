@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
 
+class ToDo {
+  int id;
+  String toDoName;
+  String toDoDesc;
+  String toDoTime;
+
+  ToDo(this.id, this.toDoName, this.toDoDesc, this.toDoTime);
+}
+
 class ToDoScreen extends StatefulWidget {
   const ToDoScreen({Key? key}) : super(key: key);
 
@@ -8,14 +17,23 @@ class ToDoScreen extends StatefulWidget {
 }
 
 class _ToDoScreenState extends State<ToDoScreen> {
-  List<String> todos = [];
+  List<ToDo> todos = <ToDo>[];
   TextEditingController toDoName = new TextEditingController();
+  TextEditingController toDoDesc = new TextEditingController();
+  TextEditingController toDoTime = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  addToDo(){
+  addToDo() {
     setState(() {
-      todos.add(toDoName.text);
+      todos.add(new ToDo(
+          todos.length + 1, toDoName.text, toDoDesc.text, toDoTime.text));
       print(todos);
+    });
+  }
+
+  deleteToDo(index){
+    setState((){
+      todos.removeWhere((item) => item.id == index);
     });
   }
 
@@ -46,6 +64,27 @@ class _ToDoScreenState extends State<ToDoScreen> {
                               return null;
                             }
                           }),
+                      TextFormField(
+                          controller: toDoDesc,
+                          decoration:
+                              InputDecoration(hintText: 'Enter Description'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter description';
+                            } else {
+                              return null;
+                            }
+                          }),
+                      TextFormField(
+                          controller: toDoTime,
+                          decoration: InputDecoration(hintText: 'Enter Time'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter time';
+                            } else {
+                              return null;
+                            }
+                          }),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: ElevatedButton(
@@ -70,12 +109,23 @@ class _ToDoScreenState extends State<ToDoScreen> {
                       Row(
                         children: [
                           Expanded(
-                            child: ListTile(
-                              leading: Icon(Icons.access_alarm),
-                              title: Text(
-                                todos[index],
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  leading: Icon(Icons.date_range),
+                                  title: Row(
+                                    children: [
+                                      Text(
+                                        todos[index].toDoName,
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                      IconButton(onPressed: (){
+                                        deleteToDo(todos[index].id);
+                                      }, icon: const Icon(Icons.delete))
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
