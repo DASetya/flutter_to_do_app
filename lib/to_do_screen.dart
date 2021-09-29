@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_day3/to_do_detail.dart';
 
 class ToDo {
   int id;
@@ -31,10 +32,23 @@ class _ToDoScreenState extends State<ToDoScreen> {
     });
   }
 
-  deleteToDo(index){
-    setState((){
+  deleteToDo(index) {
+    setState(() {
       todos.removeWhere((item) => item.id == index);
     });
+  }
+
+  Widget textFormField(TextEditingController controller, String str) {
+    return TextFormField(
+        controller: controller,
+        decoration: InputDecoration(hintText: 'Enter Your ' + str),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your ' + str;
+          } else {
+            return null;
+          }
+        });
   }
 
   @override
@@ -53,38 +67,9 @@ class _ToDoScreenState extends State<ToDoScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      TextFormField(
-                          controller: toDoName,
-                          decoration:
-                              InputDecoration(hintText: 'Enter Your To Do'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your to do';
-                            } else {
-                              return null;
-                            }
-                          }),
-                      TextFormField(
-                          controller: toDoDesc,
-                          decoration:
-                              InputDecoration(hintText: 'Enter Description'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter description';
-                            } else {
-                              return null;
-                            }
-                          }),
-                      TextFormField(
-                          controller: toDoTime,
-                          decoration: InputDecoration(hintText: 'Enter Time'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter time';
-                            } else {
-                              return null;
-                            }
-                          }),
+                      textFormField(toDoName, 'To Do'),
+                      textFormField(toDoDesc, 'Description'),
+                      textFormField(toDoTime, 'Time'),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: ElevatedButton(
@@ -113,17 +98,20 @@ class _ToDoScreenState extends State<ToDoScreen> {
                               children: [
                                 ListTile(
                                   leading: Icon(Icons.date_range),
-                                  title: Row(
-                                    children: [
-                                      Text(
-                                        todos[index].toDoName,
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
-                                      IconButton(onPressed: (){
-                                        deleteToDo(todos[index].id);
-                                      }, icon: const Icon(Icons.delete))
-                                    ],
+                                  title: Text(
+                                    todos[index].toDoName,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
+                                  onTap: () {
+                                    //Navigator.pushNamed(context, '/detail');
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => ToDoDetail()));
+                                  },
+                                  trailing: IconButton(
+                                      onPressed: () {
+                                        deleteToDo(todos[index].id);
+                                      },
+                                      icon: const Icon(Icons.delete)),
                                 ),
                               ],
                             ),
