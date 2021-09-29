@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_day3/to_do_detail.dart';
+import 'package:flutter_day3/widget/text_field_widget.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 class ToDo {
   int id;
@@ -67,9 +69,33 @@ class _ToDoScreenState extends State<ToDoScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      textFormField(toDoName, 'To Do'),
-                      textFormField(toDoDesc, 'Description'),
-                      textFormField(toDoTime, 'Time'),
+                      TextFieldWidget(
+                        con: toDoName,
+                        hint: "Enter your to do",
+                        validate: MultiValidator([
+                          RequiredValidator(errorText: "Please enter your to do"),
+                          MinLengthValidator(5, errorText: "Must be at least 5 char"),
+                        ]),
+                      ),
+                      TextFieldWidget(
+                        con: toDoDesc,
+                        hint: "Enter your to do description",
+                        validate: MultiValidator([
+                          RequiredValidator(errorText: "Please enter your to do description"),
+                          MinLengthValidator(5, errorText: "Must be at least 5 char"),
+                        ]),
+                      ),
+                      TextFieldWidget(
+                        con: toDoTime,
+                        hint: "Enter your to do time",
+                        validate: MultiValidator([
+                          RequiredValidator(errorText: "Please enter your to do time"),
+                          MinLengthValidator(5, errorText: "Must be at least 5 char"),
+                        ]),
+                      ),
+                      // textFormField(toDoName, 'To Do'),
+                      // textFormField(toDoDesc, 'Description'),
+                      // textFormField(toDoTime, 'Time'),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: ElevatedButton(
