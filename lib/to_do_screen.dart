@@ -40,19 +40,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
     });
   }
 
-  Widget textFormField(TextEditingController controller, String str) {
-    return TextFormField(
-        controller: controller,
-        decoration: InputDecoration(hintText: 'Enter Your ' + str),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your ' + str;
-          } else {
-            return null;
-          }
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -73,29 +60,32 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         con: toDoName,
                         hint: "Enter your to do",
                         validate: MultiValidator([
-                          RequiredValidator(errorText: "Please enter your to do"),
-                          MinLengthValidator(5, errorText: "Must be at least 5 char"),
+                          RequiredValidator(
+                              errorText: "Please enter your to do"),
+                          MinLengthValidator(5,
+                              errorText: "Must be at least 5 char"),
                         ]),
                       ),
                       TextFieldWidget(
                         con: toDoDesc,
                         hint: "Enter your to do description",
                         validate: MultiValidator([
-                          RequiredValidator(errorText: "Please enter your to do description"),
-                          MinLengthValidator(5, errorText: "Must be at least 5 char"),
+                          RequiredValidator(
+                              errorText: "Please enter your to do description"),
+                          MinLengthValidator(5,
+                              errorText: "Must be at least 5 char"),
                         ]),
                       ),
                       TextFieldWidget(
                         con: toDoTime,
                         hint: "Enter your to do time",
                         validate: MultiValidator([
-                          RequiredValidator(errorText: "Please enter your to do time"),
-                          MinLengthValidator(5, errorText: "Must be at least 5 char"),
+                          RequiredValidator(
+                              errorText: "Please enter your to do time"),
+                          MinLengthValidator(5,
+                              errorText: "Must be at least 5 char"),
                         ]),
                       ),
-                      // textFormField(toDoName, 'To Do'),
-                      // textFormField(toDoDesc, 'Description'),
-                      // textFormField(toDoTime, 'Time'),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: ElevatedButton(
@@ -131,7 +121,11 @@ class _ToDoScreenState extends State<ToDoScreen> {
                                   ),
                                   onTap: () {
                                     //Navigator.pushNamed(context, '/detail');
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => ToDoDetail()));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ToDoDetail()));
                                   },
                                   trailing: IconButton(
                                       onPressed: () {
@@ -154,12 +148,6 @@ class _ToDoScreenState extends State<ToDoScreen> {
                 itemCount: todos.length,
               ))),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Column(
-            //     children: todos.map((e) => new Text(e)).toList(),
-            //   ),
-            // ),
           ],
         ),
       ),
