@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_day3/model/to_do.dart';
 
 class ToDoDetail extends StatelessWidget {
-  const ToDoDetail({Key? key}) : super(key: key);
+  final ToDo toDo;
+  const ToDoDetail({Key? key, required this.toDo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,10 @@ class ToDoDetail extends StatelessWidget {
             Text('Detail'),
             TextButton(onPressed: (){
               Navigator.pop(context);
-            }, child: Text('BACK'))
+            }, child: Text('BACK')),
+            Text(toDo.toDoName),
+            Text(toDo.toDoDesc),
+            Text(toDo.toDoTime),
           ],
         ),
       ),

@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_day3/to_do_detail.dart';
+import 'package:flutter_day3/model/to_do.dart';
+import 'package:flutter_day3/presentation/to_do_detail.dart';
+import 'package:flutter_day3/repository/to_do_repo.dart';
 import 'package:flutter_day3/widget/text_field_widget.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-
-class ToDo {
-  int id;
-  String toDoName;
-  String toDoDesc;
-  String toDoTime;
-
-  ToDo(this.id, this.toDoName, this.toDoDesc, this.toDoTime);
-}
 
 class ToDoScreen extends StatefulWidget {
   const ToDoScreen({Key? key}) : super(key: key);
@@ -20,25 +13,13 @@ class ToDoScreen extends StatefulWidget {
 }
 
 class _ToDoScreenState extends State<ToDoScreen> {
-  List<ToDo> todos = <ToDo>[];
+
+  ToDoRepository _toDoRepository = ToDoRepository();
   TextEditingController toDoName = new TextEditingController();
   TextEditingController toDoDesc = new TextEditingController();
   TextEditingController toDoTime = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  addToDo() {
-    setState(() {
-      todos.add(new ToDo(
-          todos.length + 1, toDoName.text, toDoDesc.text, toDoTime.text));
-      print(todos);
-    });
-  }
-
-  deleteToDo(index) {
-    setState(() {
-      todos.removeWhere((item) => item.id == index);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +72,9 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                addToDo();
+                                setState(() {
+                                  _toDoRepository.addToDo(new ToDo(_toDoRepository.getListToDo().length+1, toDoName.text, toDoDesc.text, toDoTime.text));
+                                });
                               }
                             },
                             child: Text('Submit')),
@@ -115,7 +98,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                                 ListTile(
                                   leading: Icon(Icons.date_range),
                                   title: Text(
-                                    todos[index].toDoName,
+                                    _toDoRepository.getListToDo()[index].toDoName,
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
@@ -125,11 +108,14 @@ class _ToDoScreenState extends State<ToDoScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                ToDoDetail()));
+                                                ToDoDetail(toDo: _toDoRepository.getListToDo()[index],)));
                                   },
                                   trailing: IconButton(
                                       onPressed: () {
-                                        deleteToDo(todos[index].id);
+                                        //deleteToDo(todos[index].id);
+                                        setState(() {
+                                          _toDoRepository.deleteToDo(_toDoRepository.getListToDo()[index]);
+                                        });
                                       },
                                       icon: const Icon(Icons.delete)),
                                 ),
@@ -145,7 +131,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
                     ],
                   );
                 },
-                itemCount: todos.length,
+                itemCount: _toDoRepository.getListToDo().length,
               ))),
             ),
           ],

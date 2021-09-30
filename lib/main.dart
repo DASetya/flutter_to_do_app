@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_day3/to_do_detail.dart';
-import 'package:flutter_day3/to_do_screen.dart';
+import 'package:flutter_day3/presentation/to_do_detail.dart';
+import 'package:flutter_day3/presentation/to_do_screen.dart';
 
 void main() {
   runApp(const MyApp());
